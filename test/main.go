@@ -1,12 +1,20 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/wioenena/go-zenith"
 )
 
 func main() {
-	application := zenith.DefaultApp()
-	if err := application.Run("localhost:8080"); err != nil {
+	app := zenith.NewDefaultApp()
+	controllerManager := app.GetControllerManager()
+	if err := controllerManager.RegisterControllers(NewMyController()); err != nil {
+		fmt.Printf("Error registering controllers: %s\n", err)
+		return
+	}
+
+	if err := app.Run("localhost:8080"); err != nil {
 		panic(err)
 	}
 }
